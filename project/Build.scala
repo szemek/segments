@@ -10,6 +10,7 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     // Add your project dependencies here,
     "com.propensive" % "rapture-io" % "0.7.2",
+    "org.mongodb" %% "casbah" % "2.5.0",
     jdbc,
     anorm
   )
