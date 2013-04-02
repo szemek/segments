@@ -1,0 +1,9 @@
+@(json: String)
+
+@import play.api.templates._
+
+@main("Segments") {
+  <script type="text/javascript" charset="utf-8">
+    var captures = @Html(json)
+  </script>
+}

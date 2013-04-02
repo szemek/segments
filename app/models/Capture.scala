@@ -8,13 +8,13 @@ object Capture {
   val client = MongoClient()
   val collection = client("segments")("captures")
 
-  def create(id: Long, x: Double, y: Double) {
+  def create(id: Long, x: Long, y: Long) {
     val capture = MongoDBObject("id" -> id, "x" -> x, "y" -> y)
     collection.insert(capture)
   }
 
-  def all(id: Long) {
+  def all(id: Long) = {
     val query = MongoDBObject("id" -> id)
-    collection.find(query).toList
+    collection.find(query).toArray
   }
 }

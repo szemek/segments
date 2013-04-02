@@ -20,14 +20,20 @@ object Application extends Controller {
       val body: AnyContent = request.body
       val value = body.asJson.get.toString
       val parsed: rapture.io.Json = rapture.io.Json.parse(value)
-      val x: Double = parsed.X.toString.toDouble
-      val y: Double = parsed.Y.toString.toDouble
+      val x: Long = parsed.X.toString.toDouble.toLong
+      val y: Long = parsed.Y.toString.toDouble.toLong
       Capture.create(id, x, y)
       Ok
   }
 
   def display(id: Long) = Action {
-    Ok(views.html.Application.display())
+    val list : Array[Map[String,Long]] = Capture.all(id).map{
+      obj => Map("id" -> obj.get("id").toString.toDouble.toLong,
+                  "x" -> obj.get("x").toString.toDouble.toLong,
+                  "y" -> obj.get("y").toString.toDouble.toLong)
+    }
+    val jsonString = Json.stringify(Json.toJson(list))
+    Ok(views.html.Application.display(jsonString))
   }
 
 }
