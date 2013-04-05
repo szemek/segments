@@ -8,6 +8,4 @@ Used:
 * MongoDB
 * RaptureIO
 * JavaScript
-
-To do:
 * WebSockets
