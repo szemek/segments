@@ -3,6 +3,7 @@ package controllers
 import play.api._
 import play.api.mvc._
 import play.api.libs.json._
+import play.api.libs.iteratee._
 import models._
 
 object Application extends Controller {
@@ -15,15 +16,11 @@ object Application extends Controller {
     Ok(views.html.Application.capture(id))
   }
 
-  def create(id: Long) = Action {
-    implicit request =>
-      val body: AnyContent = request.body
-      val value = body.asJson.get.toString
-      val parsed: rapture.io.Json = rapture.io.Json.parse(value)
-      val x: Long = parsed.X.toString.toDouble.toLong
-      val y: Long = parsed.Y.toString.toDouble.toLong
-      Capture.create(id, x, y)
-      Ok
+  def ws = WebSocket.using[String] { request =>
+    val in = Iteratee.foreach[String](Capture.createFromString)
+    val out = Enumerator("OK")
+
+    (in, out)
   }
 
   def display(id: Long) = Action {
